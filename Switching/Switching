@@ -1,0 +1,48 @@
+LAYER 2 SWITCHING
+
+####Các loại Bridging mechanism: 
+	forwarding mechanism: forwarding packet 
+	aging mechanism: timestamp information is used to keep the bridge table up-to-date.  only active MAC address entries are in the bridge table. 
+	filtering mechanism: limit traffic to its associated segment or switch port.
+	transparent mechanism: deliver packets to unknown MAC addresses. 
+----------------------------------------------------------------------------------------------
+####Chặn việc học MAC trên EX Switch 
+set ethernet-switching-options interfaces ge-0/0/0.0 no-mac-learning
+----------------------------------------------------------------------------------------------
+####Chỉnh thời gian timestamp (mặc định 300s) của việc lưu trữ MAC Address
+	- All Vlan
+	set ethernet-switching-options mac-table-aging-time
+	- Per Vlan
+	 set vlans vlan-name mac-table-aging-time
+----------------------------------------------------------------------------------------------
+####Cách để bật tính năng ethernet switching trên thiết bị 
+set interface em0 unit 0 family ethernet-switching
+or
+set interface-range range-1 member-range ge-0/0/1 to ge-0/0/5 unit 0 family ethernet-switching
+
+####NOTE: tính năng switching (eswd) mặc định được bật trên EX Switch:
+user@switch-1> show system processes | match "pid|eswd"
+PID TT STAT TIME COMMAND
+823 ?? S 0:00.25 /usr/sbin/eswd -N
+
+----------------------------------------------------------------------------------------------
+####Default Speed and Duplex settings are set to Auto. Modify:
+user@switch-1> show configuration interfaces ge-0/0/6
+				ether-options {
+					no-auto-negotiation;
+					link-mode full-duplex;
+					speed {
+							1g;
+						}
+					}
+----------------------------------------------------------------------------------------------
+show ethernet-switching table 
+show ethernet-switching table extensive
+show route forwarding-table 
+show route forwarding-table family ethernet-switching
+clear ethernet-switching table:
+				interface: Name of interface
+				mac: MAC address
+				management-vlan: Management VLAN
+				vlan: Name of VLAN
+set ethernet-switching-options static vlan default mac aa:aa:aa:aa next-hop ge-0/0/7
