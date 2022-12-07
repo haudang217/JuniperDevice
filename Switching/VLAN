@@ -1,0 +1,46 @@
+VIRTUAL NETWORK
+
+set vlan v10 vlan-id 10
+set vlan v20 vlan-id 20
+
+set interface em0 unit 0 family ethernet-switching port-mode access
+set interface em0 unit 0 family ethernet-switching vlan member v10
+or
+set vlan v10 interface em0
+
+set interface em1 unit 0 family ethernet-switching port-mode trunk
+set interface em1 unit 0 family ethernet-switching vlan member v10
+set interface em1 unit 0 family ethernet-switching vlan member v20
+or
+set interface em1 unit 0 family ethernet-switching vlan member all
+----------------------------------------------------------------------------------------------
+####Cấu hình để trên một port của Switch có thể sử dụng 2 vlan( data(untagged) + voice(tagged vlan-id))
+set vlan data vlan-id 10
+set vlan voice vlan-id 20
+
+set ethernet-switching-options voip interface ge-0/0/6 vlan voice
+set ethernet-switching-options voip interface ge-0/0/6 forwarding-class assured-forwarding
+
+set interface ge-0/0/6 unit 0 family ethernet-switching port-mode access
+set interface ge-0/0/6 unit 0 family ethernet-switching vlan member data
+----------------------------------------------------------------------------------------------
+####trunk ports is to only send and receive tagged traffic => default vlan không thể đi qua được trunk port
+####cấu hình native vlan trên cả hai đầu của link
+set interface ge-0/0/6 unit 0 native-vlan-id default
+----------------------------------------------------------------------------------------------
+ROUTE VLAN INTERFACE - RVI ( Routing interVlan)
+Step 1: Create gateway for each vlan
+set interface vlan unit 10 family inet address 172.16.1.1/24
+set interface vlan unit 20 family inet address 172.16.2.1/24
+set interface vlan unit 30 family inet address 172.16.3.1/24
+
+Step 2: Configure on vlan permit communication
+set vlan v10 l3.interface vlan.10
+set vlan v20 l3.interface vlan.20
+set vlan v30 l3.interface vlan.30
+==> Cấu hình để có thể hoạt động cần:
+		- Tích hợp RVI với Vlan tương ứng như câu lệnh trên	
+		- Các interface kết nối hoạt động ở L2
+Kiểm tra:
+show interface terse vlan
+show interface terse | match eth
