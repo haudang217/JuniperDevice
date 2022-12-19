@@ -1,0 +1,19 @@
+Some features can increase availability in a network:
+      • Link aggregation groups (LAGs): This feature allows you to combine multiple Ethernet interfaces in to a single link
+      layer interface. This feature is defined in the 802.3ad standard.
+      
+      • Redundant Trunk Groups (RTG): This feature provides a quick and simple failover mechanism for redundant Layer
+      2 links. You can use this feature as a replacement for STP on access switches that are dual homed to multiple
+      aggregation switches.
+      
+      • Graceful Routing Engine switchover (GRES): This feature allows system control to switch from the master RE to the
+      backup RE with minimal interruption to network communications by synchronizing the kernel tables and PFE
+      tables. This feature requires redundant REs or Virtual Chassis.
+      
+      • Nonstop active routing (NSR): This feature provides high availability in a switch with redundant REs or on a Virtual
+      Chassis by enabling transparent switchover of the REs without requiring restart of supported routing protocols by
+      synchronizing the rpd process and routing information.
+      
+      • Nonstop Bridging (NSB): This feature provides high availability in a switch with redundant REs or on a Virtual
+      Chassis by enabling transparent switchover of the REs without requiring restart of supported Layer 2 protocols by
+      synchronizing the RE process and switching information.
