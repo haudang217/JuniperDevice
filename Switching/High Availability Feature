@@ -17,3 +17,26 @@ Some features can increase availability in a network:
       • Nonstop Bridging (NSB): This feature provides high availability in a switch with redundant REs or on a Virtual
       Chassis by enabling transparent switchover of the REs without requiring restart of supported Layer 2 protocols by
       synchronizing the RE process and switching information.
+      
+A number of hardware requirements and considerations exist when working with link aggregation. The following list highlights these details:
+• Duplex and speed settings must match on both participating devices.
+• Up to eight member links can belong to a single LAG.
+• Member links are not required to be contiguous ports and can reside on different members within a Virtual Chassis system.
+Note that LACP exchanges protocol data units (PDUs) across all member links to ensure each physical interfaces is configured and functioning properly.
+
+
+Create LAG:
+lab@vMX-1# show chassis                            
+aggregated-devices {
+    ethernet {
+        device-count 3;
+    }
+}
+[edit]
+lab@vMX-1# run show interfaces terse | match ae    
+ae0                     up    down
+ae1                     up    down
+ae2                     up    down
+
+
+
